@@ -2,6 +2,7 @@ import { createServer } from "http";
 
 const server = createServer((request, response) => {
   response.writeHead(200, { "content-type": "text/html; charset=utf-8" });
+  const url = new URL(request.url, "http://localhost:8080");
   const htmlBody = `
   <!DOCTYPE html>
   <html>
@@ -10,7 +11,9 @@ const server = createServer((request, response) => {
       <title>First Node App</title>
     </head>
     <body>
-      <h1 style="color: red">My First Node App</h1>
+      <h1 style="color: red">My First Node App created by ${url.searchParams.get(
+        "name"
+      )}</h1>
     </body>
   </html>`;
   response.end(htmlBody);

@@ -8,12 +8,12 @@ const server = createServer((request, response) => {
   <html>
     <head>
       <meta charset="utf-8">
-      <title>First Node App</title>
+      <title>My First Node App</title>
     </head>
     <body>
-      <h1 style="color: red">My First Node App created by ${url.searchParams.get(
-        "name"
-      )}</h1>
+      <h1 style="color: red">My First Node App created by ${
+        url.searchParams.get("name") || "Alex"
+      }</h1>
     </body>
   </html>`;
   response.end(htmlBody);

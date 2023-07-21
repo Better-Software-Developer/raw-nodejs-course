@@ -2,19 +2,19 @@
 // console.log(uptime());
 // import { uptime } from "os";
 // console.log(uptime());
-import { dirname } from "path";
-import { fileURLToPath } from "url";
+// import { dirname } from "path";
+// import { fileURLToPath } from "url";
 
-console.log(import.meta.url);
-function setGlobal() {
-  global.__filename = fileURLToPath(import.meta.url);
-  global.__dirname = dirname(__filename);
-}
+// console.log(import.meta.url);
+// function setGlobal() {
+//   global.__filename = fileURLToPath(import.meta.url);
+//   global.__dirname = dirname(__filename);
+// }
 
-setGlobal();
+// setGlobal();
 
-console.log(__filename);
-console.log(__dirname);
+// console.log(__filename);
+// console.log(__dirname);
 // import { readFile } from "fs";
 
 // readFile("test.txt", (err, data) => {
@@ -36,3 +36,10 @@ console.log(__dirname);
 
 // const loggedInEvt = new Event("loggedInEvt");
 // evtTarget.dispatchEvent(loggedInEvt);
+const { port1, port2 } = new MessageChannel();
+
+port1.on("message", (message) => {
+  console.log(message);
+});
+
+port2.postMessage({ data: "Hello port1" });

@@ -11,9 +11,17 @@
 
 // console.log(__filename);
 // console.log(__dirname);
-import { readFile } from "fs";
+// import { readFile } from "fs";
 
-readFile("test.txt", (err, data) => {
-  console.log(data);
-  console.log(data.toString());
-});
+// readFile("test.txt", (err, data) => {
+//   console.log(data);
+//   console.log(data.toString());
+// });
+let counter = 1;
+const interval = setInterval(() => {
+  console.log(`counter: ${counter}`);
+  counter++;
+  if (counter > 5) {
+    clearInterval(interval);
+  }
+}, 1000);

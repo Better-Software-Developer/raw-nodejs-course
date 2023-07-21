@@ -36,10 +36,22 @@
 
 // const loggedInEvt = new Event("loggedInEvt");
 // evtTarget.dispatchEvent(loggedInEvt);
-const { port1, port2 } = new MessageChannel();
+// const { port1, port2 } = new MessageChannel();
 
-port1.on("message", (message) => {
-  console.log(message);
+// port1.on("message", (message) => {
+//   console.log(message);
+// });
+
+// port2.postMessage({ data: "Hello port1" });
+// console.log(process.versions);
+process.on("unhandledRejection", (error) => {
+  console.error("unhandled rejection");
 });
 
-port2.postMessage({ data: "Hello port1" });
+function throwError() {
+  return Promise.reject("there is an error");
+}
+
+throwError().then(() => {
+  console.log("completed");
+});

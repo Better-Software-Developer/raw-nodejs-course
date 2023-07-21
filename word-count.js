@@ -1,7 +1,7 @@
 const ignoreChars = /[\.,]/;
 const separator = " ";
 
-module.exports = function wordCount(sentence) {
+export function wordCount(sentence) {
   return sentence
     .replace(ignoreChars, "")
     .toLowerCase()
@@ -10,4 +10,4 @@ module.exports = function wordCount(sentence) {
       prev[current] = prev[current] + 1 || 1;
       return prev;
     }, {});
-};
+}

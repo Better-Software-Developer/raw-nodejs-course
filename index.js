@@ -1,4 +1,4 @@
-const wordCount = require("./word-count");
+import { wordCount } from "./word-count.js";
 
 const sentence =
   "Using Node.js you can create great applications that are reliable. You can also create embeddeded applications";

@@ -44,14 +44,27 @@
 
 // port2.postMessage({ data: "Hello port1" });
 // console.log(process.versions);
-process.on("unhandledRejection", (error) => {
-  console.error("unhandled rejection");
+// process.on("unhandledRejection", (error) => {
+//   console.error("unhandled rejection");
+// });
+
+// function throwError() {
+//   return Promise.reject("there is an error");
+// }
+
+// throwError().then(() => {
+//   console.log("completed");
+// });
+console.log("Synchronous code");
+setTimeout(() => {
+  console.log("setTimeout");
+}, 0);
+Promise.resolve().then(() => {
+  console.log("Promise");
 });
-
-function throwError() {
-  return Promise.reject("there is an error");
-}
-
-throwError().then(() => {
-  console.log("completed");
+queueMicrotask(() => {
+  console.log("queueMicrotask");
+});
+process.nextTick(() => {
+  console.log("next tick");
 });

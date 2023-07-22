@@ -1,6 +1,6 @@
-import { createServer } from "http";
-import { parse } from "querystring";
-import { readFile, copyFileSync } from "fs";
+// import { createSecureServer, constants } from "http2";
+import { createServer } from "https";
+import { readFile, copyFileSync, readFileSync } from "fs";
 import formidable from "formidable";
 
 import data from "./data.js";
@@ -9,7 +9,53 @@ import { deleteContact } from "./delete.js";
 import { getContactForm } from "./form.js";
 import { saveContact } from "./save.js";
 
-createServer((request, response) => {
+const options = {
+  key: readFileSync("./localhost.key"),
+  cert: readFileSync("./localhost.cert"),
+};
+
+// const { HTTP2_HEADER_PATH, HTTP2_HEADER_STATUS, HTTP2_HEADER_METHOD } =
+//   constants;
+
+// const server = createSecureServer(options);
+
+// server
+//   .on("stream", (stream, headers) => {
+//     const parts = headers[HTTP2_HEADER_PATH].split("/");
+
+//     if (headers[HTTP2_HEADER_PATH] === "/favicon.ico") {
+//       readFile("public/favicon.ico", (err, data) => {
+//         if (err) {
+//           stream.respond({
+//             "content-type": "text/plain",
+//             [HTTP2_HEADER_STATUS]: 404,
+//           });
+//           stream.end();
+//         } else {
+//           stream.end(data);
+//         }
+//       });
+//     } else if (parts.includes("assets")) {
+//       readFile(
+//         `public${headers[HTTP2_HEADER_PATH].replaceAll("%20", " ")}`,
+//         (err, data) => {
+//           if (err) {
+//             stream.respond({ [HTTP2_HEADER_STATUS]: 404 });
+//             stream.end();
+//           } else {
+//             stream.end(data);
+//           }
+//         }
+//       );
+//     } else {
+//       sendHttp2Response(stream, getContacts(data.contacts));
+//     }
+//   })
+//   .listen(8080, () => {
+//     console.log(`Contacts App running at https://localhost:8080`);
+//   });
+
+createServer(options, (request, response) => {
   const urlParts = request.url.split("/");
   if (urlParts.includes("delete")) {
     data.contacts = deleteContact(data.contacts, urlParts[2]);
@@ -28,7 +74,15 @@ createServer((request, response) => {
         );
         contact["file"] = `/assets/${files.profilePic[0].originalFilename}`;
       }
-      saveContact(data.contacts, contact);
+      const newContact = {
+        id: contact.id[0],
+        firstName: contact.firstName[0],
+        lastName: contact.lastName[0],
+        phone: contact.phone[0],
+        email: contact.email[0],
+        file: contact.file,
+      };
+      saveContact(data.contacts, newContact);
       redirect(response, "/");
     });
   } else if (urlParts.includes("assets")) {
@@ -54,7 +108,7 @@ createServer((request, response) => {
     sendResponse(response, getContacts(data.contacts));
   }
 }).listen(8080, () => {
-  console.log(`Contacts App is running at http://localhost:8080`);
+  console.log(`Contacts App is running at https://localhost:8080`);
 });
 
 function sendResponse(response, responseBody) {
@@ -65,4 +119,9 @@ function sendResponse(response, responseBody) {
 function redirect(response, to) {
   response.writeHead(302, { location: to, "content-type": "text/plain" });
   response.end(`redirecting to ${to}`);
+}
+
+function sendHttp2Response(stream, responseBody) {
+  stream.respond({ "content-type": "text/html", [HTTP2_HEADER_STATUS]: 200 });
+  stream.end(responseBody);
 }

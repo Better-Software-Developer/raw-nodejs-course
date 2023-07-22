@@ -6,6 +6,7 @@ export default {
       lastName: "Smith",
       phone: "123456789",
       email: "john.smith@email.com",
+      file: "/assets/user.jpg",
     },
     {
       id: 2,
@@ -13,6 +14,7 @@ export default {
       lastName: "Krishnan",
       phone: "98765433",
       email: "harish.krishnan@email.com",
+      file: "/assets/user.jpg",
     },
     {
       id: 3,
@@ -20,6 +22,7 @@ export default {
       lastName: "Green",
       phone: "534324234234",
       email: "eva.green@email.com",
+      file: "/assets/user.jpg",
     },
   ],
 };
